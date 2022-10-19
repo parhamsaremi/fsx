@@ -193,6 +193,7 @@ module Process =
                         bufferSize
                     )
 
+                printfn "just checking"
                 readTask.Wait()
 
                 if not(readTask.IsCompleted) then
@@ -254,11 +255,12 @@ module Process =
 
             let ReadIteration() : bool =
                 try
+                    printfn "lock entered"
                     queuedLock.Enter()
                     ReadIterationInner()
                 finally
                     queuedLock.Exit()
-
+                    printfn "lock exitted"
             // this is a way to do a `do...while` loop in F#...
             while (ReadIteration()) do
                 ignore None
