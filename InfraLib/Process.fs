@@ -139,7 +139,7 @@ module Process =
         let startInfo =
             new ProcessStartInfo(procDetails.Command, procDetails.Arguments)
         printfn "here 5"
-        startInfo.UseShellExecute <- false
+        startInfo.UseShellExecute <- true
         printfn "here 6"
         startInfo.RedirectStandardOutput <- true
         printfn "here 7"
