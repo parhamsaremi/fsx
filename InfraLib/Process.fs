@@ -276,18 +276,18 @@ module Process =
         with
         | e -> raise <| ProcessCouldNotStart(procDetails, e)
         printfn "here 16"
-        //outReaderThread.Start()
+        outReaderThread.Start()
         printfn "here 17"
-        //errReaderThread.Start()
+        errReaderThread.Start()
         printfn "here 18"
         proc.WaitForExit()
         printfn "here 19"
         let exitCode = proc.ExitCode
         printfn "here 20"
 
-        //outReaderThread.Join()
+        outReaderThread.Join()
         printfn "here 21"
-        //errReaderThread.Join()
+        errReaderThread.Join()
         printfn "here 22"
 
         {
