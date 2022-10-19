@@ -122,10 +122,12 @@ module Process =
         | End // no more data
 
     let Execute(procDetails: ProcessDetails, echo: Echo) : ProcessResult =
-
+        printfn "here 1"
         // I know, this shit below is mutable, but it's a consequence of dealing with .NET's Process class' events?
         let mutable outputBuffer: list<OutputChunk> = []
+        printfn "here 2"
         let queuedLock = QueuedLock()
+        printfn "here 3"
 
         if (echo = Echo.All) then
             Console.WriteLine(
@@ -133,16 +135,20 @@ module Process =
             )
 
             Console.Out.Flush()
-
+        printfn "here 4"
         let startInfo =
             new ProcessStartInfo(procDetails.Command, procDetails.Arguments)
-
+        printfn "here 5"
         startInfo.UseShellExecute <- false
+        printfn "here 6"
         startInfo.RedirectStandardOutput <- true
+        printfn "here 7"
         startInfo.RedirectStandardError <- true
+        printfn "here 8"
         use proc = new System.Diagnostics.Process()
+        printfn "here 9"
         proc.StartInfo <- startInfo
-
+        printfn "here 10"
         let ReadStandard(std: Standard) =
 
             let print =
@@ -256,25 +262,33 @@ module Process =
             // this is a way to do a `do...while` loop in F#...
             while (ReadIteration()) do
                 ignore None
-
+        printfn "here 11"
         let outReaderThread =
             new Thread(new ThreadStart(fun _ -> ReadStandard(Standard.Output)))
-
+        printfn "here 12"
         let errReaderThread =
             new Thread(new ThreadStart(fun _ -> ReadStandard(Standard.Error)))
-
+        printfn "here 13"
         try
+            printfn "here 14"
             proc.Start() |> ignore
+            printfn "here 15"
         with
         | e -> raise <| ProcessCouldNotStart(procDetails, e)
-
+        printfn "here 16"
         outReaderThread.Start()
+        printfn "here 17"
         errReaderThread.Start()
+        printfn "here 18"
         proc.WaitForExit()
+        printfn "here 19"
         let exitCode = proc.ExitCode
+        printfn "here 20"
 
         outReaderThread.Join()
+        printfn "here 21"
         errReaderThread.Join()
+        printfn "here 22"
 
         {
             ExitCode = exitCode
