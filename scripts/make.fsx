@@ -122,7 +122,10 @@ let FindBuildTool() =
         
         let msbuildPath = processResult.Output.StdOut.Trim()
         msbuildPath
-
+let ProcessExecuteHidden (exe: string) (args: string) =
+    let createdProcess = System.Diagnostics.Process.Start (exe, args)
+    createdProcess.WaitForExit()
+    createdProcess.ExitCode
 
 let BuildSolution
     (buildTool: string)
@@ -132,9 +135,8 @@ let BuildSolution
     =
     let configOption = sprintf "/p:Configuration=%s" (binaryConfig.ToString())
     let buildArgs = sprintf "%s %s %s" solutionFileName configOption extraOptions
-    let buildProcess = Process.Execute ({ Command = buildTool; Arguments = buildArgs }, Echo.All)
-    if (buildProcess.ExitCode <> 0) then
-        buildProcess.Output.PrintToConsole()
+    let buildSuccess = ProcessExecuteHidden buildTool buildArgs
+    if buildSuccess <> 0 then
         Console.WriteLine()
         Console.Error.WriteLine (sprintf "%s build failed ^" buildTool)
         PrintNugetVersion() |> ignore
