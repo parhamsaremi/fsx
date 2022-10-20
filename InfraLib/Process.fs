@@ -141,9 +141,9 @@ module Process =
         printfn "here 5"
         startInfo.UseShellExecute <- false
         printfn "here 6"
-        startInfo.RedirectStandardOutput <- true
+        //startInfo.RedirectStandardOutput <- true
         printfn "here 7"
-        startInfo.RedirectStandardError <- true
+        //startInfo.RedirectStandardError <- true
         printfn "here 8"
         use proc = new System.Diagnostics.Process()
         printfn "here 9"
@@ -196,8 +196,6 @@ module Process =
                 printfn "just checking: before wait"
                 readTask.Wait()
                 printfn "just checking: after wait"
-
-
 
                 if not(readTask.IsCompleted) then
                     failwith "Failed to read"
@@ -268,11 +266,11 @@ module Process =
             while (ReadIteration()) do
                 ignore None
         printfn "here 11"
-        let outReaderThread =
-            new Thread(new ThreadStart(fun _ -> ReadStandard(Standard.Output)))
+        //let outReaderThread =
+        //    new Thread(new ThreadStart(fun _ -> ReadStandard(Standard.Output)))
         printfn "here 12"
-        let errReaderThread =
-            new Thread(new ThreadStart(fun _ -> ReadStandard(Standard.Error)))
+        //let errReaderThread =
+        //    new Thread(new ThreadStart(fun _ -> ReadStandard(Standard.Error)))
         printfn "here 13"
         try
             printfn "here 14"
@@ -281,18 +279,18 @@ module Process =
         with
         | e -> raise <| ProcessCouldNotStart(procDetails, e)
         printfn "here 16"
-        outReaderThread.Start()
+        //outReaderThread.Start()
         printfn "here 17"
-        errReaderThread.Start()
+        //errReaderThread.Start()
         printfn "here 18"
         proc.WaitForExit()
         printfn "here 19"
         let exitCode = proc.ExitCode
         printfn "here 20"
 
-        outReaderThread.Join()
+        //outReaderThread.Join()
         printfn "here 21"
-        errReaderThread.Join()
+        //errReaderThread.Join()
         printfn "here 22"
 
         {
