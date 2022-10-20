@@ -193,8 +193,11 @@ module Process =
                         bufferSize
                     )
 
-                printfn "just checking"
+                printfn "just checking: before wait"
                 readTask.Wait()
+                printfn "just checking: after wait"
+
+
 
                 if not(readTask.IsCompleted) then
                     failwith "Failed to read"
